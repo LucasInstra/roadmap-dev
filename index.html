@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roadmap: estagiário .NET para júnior com IA aplicada</title>
+<style>
+  :root{
+    --bg: #f6f7f9;
+    --surface: #ffffff;
+    --ink: #16181d;
+    --muted: #5c6470;
+    --line: #e2e5ea;
+    --accent: #1f6feb;
+    --accent-soft: #eaf1fe;
+    --ok: #1a7f4b;
+    --ok-soft: #e7f5ee;
+    --warn: #9a6700;
+    --warn-soft: #fff6e0;
+    --opt: #6a4fa3;
+    --opt-soft: #f1ecfb;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(16,24,40,.05), 0 8px 24px rgba(16,24,40,.05);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font:15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px 80px}
+
+  /* barra de progresso fixa */
+  .topbar{
+    position:sticky;top:0;z-index:10;
+    background:rgba(246,247,249,.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-inner{
+    max-width:1080px;margin:0 auto;padding:12px 20px;
+    display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  }
+  .topbar h1{
+    font-size:14px;font-weight:650;margin:0;letter-spacing:-.01em;flex:1 1 auto;
+  }
+  .topbar h1 span{color:var(--muted);font-weight:450}
+  .meter{display:flex;align-items:center;gap:10px}
+  .bar{width:180px;height:8px;border-radius:999px;background:#dfe3e9;overflow:hidden}
+  .bar > i{display:block;height:100%;width:0%;background:var(--ok);transition:width .25s ease}
+  .count{font-variant-numeric:tabular-nums;font-size:13px;color:var(--muted);min-width:46px;text-align:right}
+  .btn{
+    border:1px solid var(--line);background:var(--surface);color:var(--ink);
+    font:inherit;font-size:13px;padding:6px 12px;border-radius:9px;cursor:pointer;
+  }
+  .btn:hover{border-color:#c9ced6}
+  .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  /* intro */
+  .hero{padding:44px 0 8px}
+  .kicker{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:650}
+  .hero h2{font-size:32px;line-height:1.15;letter-spacing:-.02em;margin:10px 0 12px;max-width:18ch}
+  .hero p{color:var(--muted);max-width:62ch;margin:0 0 8px}
+  .legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+  .tag{font-size:12px;padding:3px 9px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--muted)}
+  .tag.pre{background:var(--accent-soft);border-color:#cfe0fd;color:#114ba3}
+  .tag.cert{background:var(--ok-soft);border-color:#c6e6d6;color:#14663c}
+  .tag.art{background:var(--warn-soft);border-color:#efdfb5;color:#7a5200}
+  .tag.opt{background:var(--opt-soft);border-color:#ddd2f4;color:#553d86}
+
+  /* seções */
+  section{margin-top:38px}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+  .sec-head h3{font-size:19px;letter-spacing:-.01em;margin:0}
+  .sec-head p{margin:0;color:var(--muted);font-size:13px}
+  .sec-note{color:var(--muted);font-size:13px;margin:0 0 18px;max-width:70ch}
+
+  /* trilha vertical */
+  .track{position:relative;margin:0;padding:0 0 0 46px;list-style:none}
+  .track::before{
+    content:"";position:absolute;left:19px;top:12px;bottom:26px;width:2px;
+    background:linear-gradient(180deg,#c9d7f5,#d8dde6 60%,#e6e9ee);
+  }
+  .stage{position:relative;margin:0 0 18px}
+  .stage::before{
+    content:"";position:absolute;left:-34px;top:22px;width:12px;height:12px;border-radius:50%;
+    background:var(--surface);border:2px solid #b9c6dd;
+  }
+  .stage.done::before{background:var(--ok);border-color:var(--ok)}
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:18px 20px;
+  }
+  .card-head{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap}
+  .step{
+    font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--muted);padding-top:3px;
+  }
+  .card h4{margin:0;font-size:17px;letter-spacing:-.01em;flex:1 1 220px}
+  .meta{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 12px}
+  .chip{font-size:12px;color:var(--muted);background:#f2f4f7;border-radius:7px;padding:3px 8px}
+  .why{color:var(--muted);margin:0 0 12px;font-size:14px}
+
+  /* itens com checkbox */
+  ul.checks{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+  ul.checks li{display:flex;gap:10px;align-items:flex-start}
+  ul.checks input{
+    appearance:none;-webkit-appearance:none;flex:0 0 17px;width:17px;height:17px;margin-top:2px;
+    border:1.5px solid #b7bec9;border-radius:5px;background:#fff;cursor:pointer;position:relative;
+  }
+  ul.checks input:checked{background:var(--ok);border-color:var(--ok)}
+  ul.checks input:checked::after{
+    content:"";position:absolute;left:5px;top:1px;width:5px;height:10px;
+    border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);
+  }
+  ul.checks input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  ul.checks label{cursor:pointer;font-size:14px}
+  ul.checks input:checked + label{color:var(--muted);text-decoration:line-through;text-decoration-color:#c3c9d2}
+
+  .goal{
+    margin-top:14px;padding:10px 12px;border-radius:10px;background:var(--ok-soft);
+    border:1px solid #cfe8db;font-size:13.5px;
+  }
+  .goal b{color:#14663c}
+  .caveat{
+    margin-top:10px;padding:10px 12px;border-radius:10px;background:#fbf7ec;
+    border:1px solid #eee0bf;font-size:13px;color:#5c4a1b;
+  }
+
+  /* grade de cards */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+  .mini{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px;
+  }
+  .mini h4{margin:0;font-size:15px}
+  .mini p{margin:0;color:var(--muted);font-size:13.5px}
+  .mini .checks{margin-top:2px}
+  .mini .checks label{font-size:13.5px}
+
+  /* tabela de livros */
+  .tablewrap{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:#fafbfc}
+  tr:last-child td{border-bottom:none}
+  td:first-child{width:26px;padding-right:0}
+  .book-title{font-weight:600}
+  .book-why{color:var(--muted);font-size:13px}
+
+  /* teste final */
+  .test{
+    background:linear-gradient(180deg,#ffffff,#fbfcfe);
+    border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);
+  }
+  .test ol{margin:0;padding-left:0;list-style:none;display:grid;gap:12px}
+  .test li{display:flex;gap:12px;align-items:flex-start;font-size:14.5px}
+  .test .n{
+    flex:0 0 26px;height:26px;border-radius:50%;background:var(--accent-soft);
+    color:#114ba3;display:grid;place-items:center;font-size:12px;font-weight:700;
+  }
+
+  footer{margin-top:46px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:16px}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  @media (max-width:620px){
+    .hero h2{font-size:25px}
+    .track{padding-left:34px}
+    .track::before{left:11px}
+    .stage::before{left:-28px}
+    .topbar h1{display:none}
+    .bar{width:120px}
+  }
+
+  @media print{
+    body{background:#fff}
+    .topbar{position:static;background:#fff}
+    .btn{display:none}
+    .card,.mini,.tablewrap,.test{box-shadow:none;break-inside:avoid}
+    section{break-inside:avoid}
+    .hero{padding-top:10px}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <h1>Roadmap de carreira <span>· estagiário .NET para júnior com IA aplicada</span></h1>
+    <div class="meter" aria-live="polite">
+      <div class="bar"><i id="bar"></i></div>
+      <span class="count" id="count">0/0</span>
+    </div>
+    <button class="btn" id="reset" type="button">Limpar progresso</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="kicker">Trilha Nível A</div>
+    <h2>Do zero ao julgamento próprio, com certificação que o mercado reconhece</h2>
+    <p>
+      Ordem por dependência, não por tempo. Cada etapa tem um artefato que prova que você entendeu,
+      e um critério de saída que não depende de opinião.
+    </p>
+    <p>
+      Marque os itens conforme avança. O progresso fica salvo neste navegador.
+    </p>
+    <div class="legend">
+      <span class="tag pre">pré-requisito</span>
+      <span class="tag cert">certificação</span>
+      <span class="tag art">artefato</span>
+      <span class="tag opt">opcional</span>
+    </div>
+  </header>
+
+  <section id="trilha">
+    <div class="sec-head">
+      <h3>Trilha principal</h3>
+      <p>4 etapas</p>
+    </div>
+    <p class="sec-note">
+      AI-901 e AI-103 são exames de Azure com Python e Microsoft Foundry. AZ-204 valida o seu stack real
+      e só entra se a empresa for Azure.
+    </p>
+
+    <ol class="track">
+
+      <li class="stage" data-stage="py">
+        <div class="card">
+          <div class="card-head">
+            <span class="step">Etapa 0</span>
+            <h4>Ponte de Python</h4>
+            <span class="tag pre">pré-requisito</span>
+          </div>
+          <div class="meta">
+            <span class="chip">sem exame</span>
+            <span class="chip">só o necessário</span>
+          </div>
+          <p class="why">
+            Você vem de C#. O objetivo não é virar dev Python, é ler e adaptar os exemplos da Microsoft sem travar.
+          </p>
+          <ul class="checks">
+            <li><input type="checkbox" id="py1"><label for="py1">Sintaxe, tipos, listas e dicionários</label></li>
+            <li><input type="checkbox" id="py2"><label for="py2">Comprehensions e funções</label></li>
+            <li><input type="checkbox" id="py3"><label for="py3"><code>async</code>/<code>await</code></label></li>
+            <li><input type="checkbox" id="py4"><label for="py4"><code>pip</code> e ambiente virtual</label></li>
+            <li><input type="checkbox" id="py5"><label for="py5">HTTP e JSON (<code>requests</code> ou <code>httpx</code>)</label></li>
+            <li><input type="checkbox" id="py6"><label for="py6">SDK do Foundry e leitura de sample</label></li>
+          </ul>
+          <div class="caveat">
+            <b>Não estudar:</b> orientação a objetos profunda, Django, pandas, ciência de dados. Isso é outro caminho.
+          </div>
+          <div class="goal">
+            <b>Critério de saída:</b> ler um sample de Foundry e explicar linha por linha sem executar.
+          </div>
+        </div>
+      </li>
+
+      <li class="stage" data-stage="ai901">
+        <div class="card">
+          <div class="card-head">
+            <span class="step">Etapa 1</span>
+            <h4>AI-901 · Azure AI Fundamentals</h4>
+            <span class="tag cert">certificação</span>
+          </div>
+          <div class="meta">
+            <span class="chip">~45 min</span>
+            <span class="chip">corte 700</span>
+            <span class="chip">40-45% conceitos</span>
+            <span class="chip">55-60% Foundry</span>
+            <span class="chip">pt-BR</span>
+          </div>
+          <p class="why">
+            Ponto de entrada. Serve para vocabulário e para passar filtro de recrutador. A trilha de estudo é gratuita;
+            só o exame é pago, com valor por país.
+          </p>
+          <ul class="checks">
+            <li><input type="checkbox" id="a1"><label for="a1">Percorrer as trilhas do Microsoft Learn</label></li>
+            <li><input type="checkbox" id="a2"><label for="a2">Ler o study guide oficial (é o syllabus real)</label></li>
+            <li><input type="checkbox" id="a3"><label for="a3">Fazer o Practice Assessment no AI Skills Navigator</label></li>
+            <li><input type="checkbox" id="a4"><label for="a4">Agendar e fazer o exame</label></li>
+          </ul>
+          <div class="goal">
+            <b>Artefato:</b> script Python que chama modelo no Foundry, recebe resposta em streaming
+            e imprime tokens e latência.
+          </div>
+          <div class="goal">
+            <b>Critério de saída:</b> passing com folga no Practice Assessment antes de pagar o voucher.
+          </div>
+        </div>
+      </li>
+
+      <li class="stage" data-stage="ai103">
+        <div class="card">
+          <div class="card-head">
+            <span class="step">Etapa 2</span>
+            <h4>AI-103 · Azure AI Apps and Agents Developer Associate</h4>
+            <span class="tag cert">certificação</span>
+          </div>
+          <div class="meta">
+            <span class="chip">120 min</span>
+            <span class="chip">proctored</span>
+            <span class="chip">pt-BR</span>
+            <span class="chip">exige Python + Foundry</span>
+          </div>
+          <p class="why">
+            É a certificação que a Microsoft mapeia oficialmente para o cargo <b>AI Engineer</b>.
+            É a peça central do roadmap.
+          </p>
+          <ul class="checks">
+            <li><input type="checkbox" id="b1"><label for="b1">Planejar e gerenciar uma solução de IA no Azure</label></li>
+            <li><input type="checkbox" id="b2"><label for="b2">Soluções generativas e agênticas</label></li>
+            <li><input type="checkbox" id="b3"><label for="b3">Visão computacional</label></li>
+            <li><input type="checkbox" id="b4"><label for="b4">Análise de texto</label></li>
+            <li><input type="checkbox" id="b5"><label for="b5">Extração de informação</label></li>
+            <li><input type="checkbox" id="b6"><label for="b6">Agendar e fazer o exame</label></li>
+          </ul>
+          <div class="goal">
+            <b>Artefato:</b> agente com 3 ferramentas, teto de custo por execução e 20 casos de avaliação
+            com taxa de acerto registrada.
+          </div>
+          <div class="goal">
+            <b>Critério de saída:</b> explicar sem consultar o que é um eval, por que existe e como medir custo por resposta.
+          </div>
+          <div class="caveat">
+            <b>Traduzir para C#:</b> reimplemente o artefato com <code>Microsoft.Extensions.AI</code>
+            (<code>IChatClient</code>, <code>IEmbeddingGenerator</code>, middleware). O exame é Python; o seu emprego é .NET.
+          </div>
+        </div>
+      </li>
+
+      <li class="stage" data-stage="az204">
+        <div class="card">
+          <div class="card-head">
+            <span class="step">Etapa 3</span>
+            <h4>AZ-204 · Azure Developer Associate</h4>
+            <span class="tag opt">condicional</span>
+          </div>
+          <div class="meta">
+            <span class="chip">~100 min</span>
+            <span class="chip">se a empresa for Azure</span>
+          </div>
+          <p class="why">
+            Não é IA, é o seu stack. Vale por promoção interna e por credibilidade em conversa de arquitetura.
+            Se a Instramed for on-premise ou AWS, pule.
+          </p>
+          <ul class="checks">
+            <li><input type="checkbox" id="c1"><label for="c1">Confirmar com o time se a nuvem é Azure</label></li>
+            <li><input type="checkbox" id="c2"><label for="c2">Compute, storage e segurança</label></li>
+            <li><input type="checkbox" id="c3"><label for="c3">Key Vault e Application Insights</label></li>
+            <li><input type="checkbox" id="c4"><label for="c4">Agendar e fazer o exame</label></li>
+          </ul>
+          <div class="goal">
+            <b>Artefato:</b> app .NET publicado com segredos no Key Vault e telemetria no Application Insights.
+          </div>
+        </div>
+      </li>
+
+    </ol>
+  </section>
+
+  <section id="extras">
+    <div class="sec-head">
+      <h3>Além das certificações</h3>
+      <p>baixo custo, alto sinal</p>
+    </div>
+    <p class="sec-note">
+      Nenhum destes substitui exame, mas todos custam pouco ou nada e encurtam o caminho.
+    </p>
+    <div class="grid">
+      <div class="mini">
+        <h4>Study guides como syllabus</h4>
+        <p>O study guide do AI-103 lista exatamente o que o mercado espera. Vale ler mesmo sem fazer a prova.</p>
+        <ul class="checks"><li><input type="checkbox" id="e1"><label for="e1">Ler o study guide do AI-103</label></li></ul>
+      </div>
+      <div class="mini">
+        <h4>Microsoft Applied Skills</h4>
+        <p>Avaliações de cenário gratuitas, sem proctoring, com credencial verificável. Três em um fim de semana.</p>
+        <ul class="checks"><li><input type="checkbox" id="e2"><label for="e2">Concluir 1 Applied Skill</label></li></ul>
+      </div>
+      <div class="mini">
+        <h4>AI Skills Navigator</h4>
+        <p>Onde ficam os Practice Assessments. Termômetro antes de pagar voucher.</p>
+        <ul class="checks"><li><input type="checkbox" id="e3"><label for="e3">Rodar um Practice Assessment</label></li></ul>
+      </div>
+      <div class="mini">
+        <h4>Foundry Local</h4>
+        <p>Rodar modelo no dispositivo. Em software médico, dado de paciente não sai da máquina.</p>
+        <ul class="checks"><li><input type="checkbox" id="e4"><label for="e4">Rodar um modelo local com SDK em C#</label></li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="livros">
+    <div class="sec-head">
+      <h3>Leitura</h3>
+      <p>4 essenciais, 3 de consulta</p>
+    </div>
+    <p class="sec-note">
+      Ordem de retorno, não de prestígio. Livro é o que fica quando o curso acaba.
+    </p>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th></th><th>Livro</th><th>Por que</th><th>Quando</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" id="l1" aria-label="Lido: A Philosophy of Software Design"></td>
+            <td><div class="book-title">A Philosophy of Software Design</div><div class="book-why">Ousterhout, 2ª ed., ~190 pp</div></td>
+            <td>Complexidade, módulos profundos, interfaces. Melhor custo por página que existe.</td>
+            <td>Antes do AI-901</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="l2" aria-label="Lido: Software Engineering at Google"></td>
+            <td><div class="book-title">Software Engineering at Google</div><div class="book-why">edição gratuita online</div></td>
+            <td>Code review, testes, deprecação. O que uma empresa grande espera de você.</td>
+            <td>Em paralelo</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="l3" aria-label="Lido: AI Engineering"></td>
+            <td><div class="book-title">AI Engineering</div><div class="book-why">Chip Huyen, 2025</div></td>
+            <td>A referência da área. Comece pelos capítulos de avaliação e custo.</td>
+            <td>Durante o AI-103</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="l4" aria-label="Lido: Working Effectively with Legacy Code"></td>
+            <td><div class="book-title">Working Effectively with Legacy Code</div><div class="book-why">Feathers · caps. 1, 2, 4, 9, 25</div></td>
+            <td>Seams e testes de caracterização. O seu dia a dia em WPF sem testes.</td>
+            <td>Depois</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="l5" aria-label="Consulta: SWEBOK"></td>
+            <td><div class="book-title">SWEBOK v4.0a</div><div class="book-why">gratuito · referência</div></td>
+            <td>Mapa das 18 áreas. Leia o capítulo que a tarefa pede.</td>
+            <td>Consulta</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="l6" aria-label="Consulta: Refactoring"></td>
+            <td><div class="book-title">Refactoring</div><div class="book-why">Fowler · caps. 1 a 4</div></td>
+            <td>O catálogo vira consulta. Os 4 primeiros capítulos são o que importa.</td>
+            <td>Consulta</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="l7" aria-label="Consulta: Accelerate"></td>
+            <td><div class="book-title">Accelerate</div><div class="book-why">Forsgren, Humble, Kim</div></td>
+            <td>Explica o que seu gestor mede: lead time, deploy, MTTR.</td>
+            <td>Antes da conversa de efetivação</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="pratica">
+    <div class="sec-head">
+      <h3>Prática no trabalho</h3>
+      <p>o que transforma certificado em efetivação</p>
+    </div>
+    <p class="sec-note">
+      Certificação abre porta. Isto é o que faz alguém confiar em você com um problema em produção.
+    </p>
+    <div class="grid">
+      <div class="mini">
+        <h4>Um módulo seu</h4>
+        <p>Não uma tarefa: um módulo que você conhece melhor que qualquer pessoa e que, se quebrar, ligam para você.</p>
+        <ul class="checks"><li><input type="checkbox" id="p1"><label for="p1">Escolher o módulo</label></li></ul>
+      </div>
+      <div class="mini">
+        <h4>Um incidente de verdade</h4>
+        <p>Acompanhar um chamado do começo ao fim e escrever o postmortem. Maior aprendizado por hora que existe.</p>
+        <ul class="checks"><li><input type="checkbox" id="p2"><label for="p2">Escrever 1 postmortem</label></li></ul>
+      </div>
+      <div class="mini">
+        <h4>Prova de funcionamento</h4>
+        <p>Build, teste, validação visual com print, e uma linha no MR: o que verifiquei e o que não verifiquei.</p>
+        <ul class="checks"><li><input type="checkbox" id="p3"><label for="p3">Aplicar em 3 entregas</label></li></ul>
+      </div>
+      <div class="mini">
+        <h4>Design doc de 1 página</h4>
+        <p>Contexto, alternativas, decisão e risco. Quase nenhum estagiário faz. Quem faz passa a ser convidado para decisão.</p>
+        <ul class="checks"><li><input type="checkbox" id="p4"><label for="p4">Escrever 1 design doc</label></li></ul>
+      </div>
+      <div class="mini">
+        <h4>Nicho regulatório</h4>
+        <p>LGPD art. 11, RDC 657/2022 (ANVISA), IEC 62304, ISO 14971. Vantagem que nenhum curso de prompt dá.</p>
+        <ul class="checks"><li><input type="checkbox" id="p5"><label for="p5">Ler os 4 e resumir em 1 página</label></li></ul>
+      </div>
+      <div class="mini">
+        <h4>Uma coisa pública</h4>
+        <p>Post técnico, palestra interna ou contribuição open source. Prova que você sabe explicar.</p>
+        <ul class="checks"><li><input type="checkbox" id="p6"><label for="p6">Publicar 1 artefato</label></li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="armadilhas">
+    <div class="sec-head">
+      <h3>Armadilhas</h3>
+      <p>as três que custam carreira</p>
+    </div>
+    <div class="grid">
+      <div class="mini">
+        <h4>Ficar no fácil</h4>
+        <p>A IA é excelente no raso e bem especificado. Só aceitar essas tarefas constrói portfólio raso.</p>
+      </div>
+      <div class="mini">
+        <h4>Nunca ser dono de uma falha</h4>
+        <p>Quem nunca quebrou e consertou não tem cicatriz. Sem cicatriz, ninguém confia.</p>
+      </div>
+      <div class="mini">
+        <h4>Otimizar volume</h4>
+        <p>Dez features que ninguém revisa valem menos que uma pequena, testada e entendida pelo time.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="teste">
+    <div class="sec-head">
+      <h3>Teste de seis meses</h3>
+      <p>quatro perguntas</p>
+    </div>
+    <p class="sec-note">Se as quatro respostas forem "sim", você não está perdendo oportunidades.</p>
+    <div class="test">
+      <ol>
+        <li><span class="n">1</span><span>Existe um módulo que é seu e que o time reconhece como seu?</span></li>
+        <li><span class="n">2</span><span>Você já diagnosticou sozinho um problema que a IA não resolveu?</span></li>
+        <li><span class="n">3</span><span>Você já escreveu uma decisão técnica que outra pessoa seguiu?</span></li>
+        <li><span class="n">4</span><span>Alguém já pediu sua opinião antes de decidir algo?</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <footer>
+    Progresso salvo localmente neste navegador. Para imprimir ou exportar em PDF, use Ctrl+P.
+    Fontes das credenciais: Microsoft Learn (AI-901, AI-103) e documentação do cargo AI Engineer.
+  </footer>
+</div>
+
+<script>
+(function(){
+  var KEY = 'roadmap-dev-v1';
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[type="checkbox"]'));
+  var bar = document.getElementById('bar');
+  var count = document.getElementById('count');
+
+  function load(){
+    var saved = {};
+    try { saved = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e){ saved = {}; }
+    boxes.forEach(function(b){ if(saved[b.id]) b.checked = true; });
+  }
+  function save(){
+    var state = {};
+    boxes.forEach(function(b){ if(b.checked) state[b.id] = 1; });
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){}
+  }
+  function render(){
+    var total = boxes.length;
+    var done = boxes.filter(function(b){ return b.checked; }).length;
+    var pct = total ? Math.round(done / total * 100) : 0;
+    bar.style.width = pct + '%';
+    count.textContent = done + '/' + total;
+    document.querySelectorAll('.stage').forEach(function(stage){
+      var inner = stage.querySelectorAll('input[type="checkbox"]');
+      var all = inner.length > 0 && Array.prototype.every.call(inner, function(b){ return b.checked; });
+      stage.classList.toggle('done', all);
+    });
+  }
+
+  boxes.forEach(function(b){
+    b.addEventListener('change', function(){ save(); render(); });
+  });
+
+  document.getElementById('reset').addEventListener('click', function(){
+    boxes.forEach(function(b){ b.checked = false; });
+    try { localStorage.removeItem(KEY); } catch(e){}
+    render();
+  });
+
+  load();
+  render();
+})();
+</script>
+</body>
+</html>
