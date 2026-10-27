@@ -9,6 +9,7 @@ import {
   Compass,
   Copy,
   Download,
+  GraduationCap,
   RotateCcw,
   Route,
   ShieldCheck,
@@ -39,7 +40,7 @@ import { cn } from "@/lib/utils";
 
 type Kind = "pre" | "cert" | "art" | "opt";
 
-type Item = { id: string; label: string };
+type Item = { id: string; label: string; href?: string; course?: string };
 
 type ExtLink = { label: string; href: string };
 
@@ -82,12 +83,42 @@ const stages: Stage[] = [
       "O que não aparece em sample, ignore. O exame cobra Foundry, não a linguagem.",
     ],
     items: [
-      { id: "py1", label: "Sintaxe, tipos, listas e dicionários" },
-      { id: "py2", label: "Comprehensions e funções" },
-      { id: "py3", label: "async e await" },
-      { id: "py4", label: "pip e ambiente virtual" },
-      { id: "py5", label: "HTTP e JSON com requests ou httpx" },
-      { id: "py6", label: "SDK do Foundry e leitura de sample" },
+      {
+        id: "py1",
+        label: "Sintaxe, tipos, listas e dicionários",
+        href: "https://docs.python.org/3/tutorial/introduction.html",
+        course: "https://realpython.com/python-basics/",
+      },
+      {
+        id: "py2",
+        label: "Comprehensions e funções",
+        href: "https://docs.python.org/3/tutorial/datastructures.html",
+        course: "https://realpython.com/list-comprehension-python/",
+      },
+      {
+        id: "py3",
+        label: "async e await",
+        href: "https://docs.python.org/3/library/asyncio-task.html",
+        course: "https://realpython.com/async-io-python/",
+      },
+      {
+        id: "py4",
+        label: "pip e ambiente virtual",
+        href: "https://docs.python.org/3/library/venv.html",
+        course: "https://realpython.com/python-virtual-environments-a-primer/",
+      },
+      {
+        id: "py5",
+        label: "HTTP e JSON com requests ou httpx",
+        href: "https://www.python-httpx.org/quickstart/",
+        course: "https://realpython.com/python-requests/",
+      },
+      {
+        id: "py6",
+        label: "SDK do Foundry e leitura de sample",
+        href: "https://learn.microsoft.com/en-us/azure/foundry/quickstarts/get-started-code",
+        course: "https://github.com/microsoft/generative-ai-for-beginners",
+      },
     ],
     goal: "Ler um sample de Foundry e explicar linha por linha sem executar.",
     caveat:
@@ -131,10 +162,28 @@ const stages: Stage[] = [
       "Confira a data de atualização do study guide antes de marcar a prova. O exame muda.",
     ],
     items: [
-      { id: "a1", label: "Percorrer as trilhas do Microsoft Learn" },
-      { id: "a2", label: "Ler o study guide oficial, que é o syllabus real" },
-      { id: "a3", label: "Fazer o Practice Assessment no AI Skills Navigator" },
-      { id: "a4", label: "Agendar e fazer o exame" },
+      {
+        id: "a1",
+        label: "Percorrer as trilhas do Microsoft Learn",
+        href: "https://learn.microsoft.com/en-us/training/paths/get-started-ai-apps-agents/",
+      },
+      {
+        id: "a2",
+        label: "Ler o study guide oficial, que é o syllabus real",
+        href: "https://aka.ms/AI901-StudyGuide",
+        course: "https://learn.microsoft.com/en-us/shows/exam-readiness-zone/",
+      },
+      {
+        id: "a3",
+        label: "Fazer o Practice Assessment no AI Skills Navigator",
+        href: "https://aiskillsnavigator.microsoft.com/",
+        course: "https://go.microsoft.com/fwlink/?linkid=2226877",
+      },
+      {
+        id: "a4",
+        label: "Agendar e fazer o exame",
+        href: "https://learn.microsoft.com/en-us/credentials/certifications/exams/ai-901/",
+      },
     ],
     artifact:
       "Script Python que chama modelo no Foundry, recebe resposta em streaming e imprime tokens e latência.",
@@ -175,12 +224,43 @@ const stages: Stage[] = [
       "Depois de cada domínio, reimplemente o artefato em C#. O certificado é Python; o seu trabalho é .NET.",
     ],
     items: [
-      { id: "b1", label: "Planejar e gerenciar uma solução de IA no Azure" },
-      { id: "b2", label: "Soluções generativas e agênticas" },
-      { id: "b3", label: "Visão computacional" },
-      { id: "b4", label: "Análise de texto" },
-      { id: "b5", label: "Extração de informação" },
-      { id: "b6", label: "Agendar e fazer o exame" },
+      {
+        id: "b1",
+        label: "Planejar e gerenciar uma solução de IA no Azure",
+        href: "https://aka.ms/AI103-StudyGuide",
+      },
+      {
+        id: "b2",
+        label: "Soluções generativas e agênticas",
+        href: "https://learn.microsoft.com/en-us/azure/foundry/agents/overview",
+        course: "https://github.com/microsoft/ai-agents-for-beginners",
+      },
+      {
+        id: "b3",
+        label: "Visão computacional",
+        href: "https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/",
+        course:
+          "https://learn.microsoft.com/en-us/training/paths/insight-visual-data/",
+      },
+      {
+        id: "b4",
+        label: "Análise de texto",
+        href: "https://learn.microsoft.com/en-us/azure/ai-services/language-service/",
+        course:
+          "https://learn.microsoft.com/en-us/training/paths/develop-language-solutions-azure-ai/",
+      },
+      {
+        id: "b5",
+        label: "Extração de informação",
+        href: "https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/",
+        course:
+          "https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/quickstarts/get-started-sdks-rest-api",
+      },
+      {
+        id: "b6",
+        label: "Agendar e fazer o exame",
+        href: "https://learn.microsoft.com/en-us/credentials/certifications/azure-ai-apps-and-agents-developer-associate/",
+      },
     ],
     artifact:
       "Agente com 3 ferramentas, teto de custo por execução e 20 casos de avaliação com taxa de acerto registrada.",
@@ -211,9 +291,25 @@ const stages: Stage[] = [
     ],
     items: [
       { id: "c1", label: "Confirmar com o time se a nuvem é Azure" },
-      { id: "c2", label: "Compute, storage e segurança" },
-      { id: "c3", label: "Key Vault e Application Insights" },
-      { id: "c4", label: "Agendar e fazer o exame" },
+      {
+        id: "c2",
+        label: "Compute, storage e segurança",
+        href: "https://aka.ms/AZ204-StudyGuide",
+        course:
+          "https://learn.microsoft.com/en-us/azure/app-service/quickstart-dotnetcore",
+      },
+      {
+        id: "c3",
+        label: "Key Vault e Application Insights",
+        href: "https://learn.microsoft.com/en-us/azure/key-vault/general/overview",
+        course:
+          "https://learn.microsoft.com/en-us/azure/key-vault/general/quick-create-portal",
+      },
+      {
+        id: "c4",
+        label: "Agendar e fazer o exame",
+        href: "https://learn.microsoft.com/en-us/credentials/certifications/azure-developer/",
+      },
     ],
     artifact:
       "App .NET publicado com segredos no Key Vault e telemetria no Application Insights.",
@@ -314,7 +410,13 @@ const books = [
   },
 ];
 
-const practice = [
+const practice: {
+  id: string;
+  title: string;
+  body: string;
+  check: string;
+  href?: string;
+}[] = [
   {
     id: "p1",
     title: "Um módulo seu",
@@ -326,6 +428,7 @@ const practice = [
     title: "Um incidente de verdade",
     body: "Acompanhar um chamado do começo ao fim e escrever o postmortem. Maior aprendizado por hora que existe.",
     check: "Escrever 1 postmortem",
+    href: "https://sre.google/sre-book/postmortem-culture/",
   },
   {
     id: "p3",
@@ -338,12 +441,14 @@ const practice = [
     title: "Design doc de 1 página",
     body: "Contexto, alternativas, decisão e risco. Quase nenhum estagiário faz. Quem faz passa a ser convidado para decisão.",
     check: "Escrever 1 design doc",
+    href: "https://www.industrialempathy.com/posts/design-docs-at-google/",
   },
   {
     id: "p5",
     title: "Nicho regulatório",
     body: "LGPD art. 11, RDC 657/2022 da ANVISA, IEC 62304, ISO 14971. Vantagem que nenhum curso de prompt dá.",
     check: "Ler os 4 e resumir em 1 página",
+    href: "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm",
   },
   {
     id: "p6",
@@ -354,9 +459,21 @@ const practice = [
 ];
 
 const costItems = [
-  { id: "cost1", label: "Criar orçamento e alerta" },
-  { id: "cost2", label: "Conferir a camada gratuita" },
-  { id: "cost3", label: "Apagar o resource group" },
+  {
+    id: "cost1",
+    label: "Criar orçamento e alerta",
+    href: "https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/tutorial-acm-create-budgets",
+  },
+  {
+    id: "cost2",
+    label: "Conferir a camada gratuita",
+    href: "https://azure.microsoft.com/en-us/pricing/free-services/",
+  },
+  {
+    id: "cost3",
+    label: "Apagar o resource group",
+    href: "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group",
+  },
 ];
 
 const traps = [
@@ -487,6 +604,34 @@ function ExtLinkChip({ link }: { link: ExtLink }) {
     >
       {link.label}
       <ArrowUpRight className="size-3 opacity-50 transition-opacity group-hover:opacity-100" />
+    </a>
+  );
+}
+
+function StudyLink({
+  href,
+  label,
+  kind = "doc",
+}: {
+  href: string;
+  label: string;
+  kind?: "doc" | "course";
+}) {
+  const Icon = kind === "doc" ? BookOpen : GraduationCap;
+  const text = kind === "doc" ? "Doc oficial" : "Curso ou guia";
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={`${text}: ${label}`}
+      title={text}
+      className={cn(
+        "mt-px grid size-5 shrink-0 place-items-center rounded-md transition-colors hover:bg-primary/10 hover:text-primary",
+        kind === "doc" ? "text-muted-foreground/50" : "text-primary/60",
+      )}
+    >
+      <Icon className="size-3.5" />
     </a>
   );
 }
@@ -902,6 +1047,17 @@ export default function App() {
           {/* ---------------------------------------------------- trilha */}
           {tab === "trilha" && (
             <div className="mt-8">
+            <div className="mb-4 flex flex-wrap items-center gap-4 font-mono text-[10px] text-muted-foreground">
+              <span className="flex items-center gap-1.5">
+                <BookOpen className="size-3.5" />
+                doc oficial
+              </span>
+              <span className="flex items-center gap-1.5 text-primary/70">
+                <GraduationCap className="size-3.5" />
+                curso ou guia
+              </span>
+            </div>
+
             <Card
               size="compact"
               className="mb-6 border-primary/25 bg-primary/[0.04]"
@@ -1068,12 +1224,30 @@ export default function App() {
                           <div className="grid gap-2.5 sm:grid-cols-2">
                             {stage.items.map((item) => (
                               <div key={item.id} className="min-w-0">
-                                <Checkbox
-                                  id={item.id}
-                                  label={item.label}
-                                  checked={!!done[item.id]}
-                                  onCheckedChange={(v) => toggle(item.id, v)}
-                                />
+                                <div className="flex items-start gap-2">
+                                  <Checkbox
+                                    id={item.id}
+                                    label={item.label}
+                                    className="min-w-0 flex-1"
+                                    checked={!!done[item.id]}
+                                    onCheckedChange={(v) => toggle(item.id, v)}
+                                  />
+                                  <div className="flex shrink-0 items-center gap-0.5">
+                                    {item.href && (
+                                      <StudyLink
+                                        href={item.href}
+                                        label={item.label}
+                                      />
+                                    )}
+                                    {item.course && (
+                                      <StudyLink
+                                        href={item.course}
+                                        label={item.label}
+                                        kind="course"
+                                      />
+                                    )}
+                                  </div>
+                                </div>
                                 {done[item.id] && (
                                   <input
                                     value={evidence[item.id] ?? ""}
@@ -1252,13 +1426,18 @@ export default function App() {
                 </CardHeader>
                 <CardContent className="grid gap-2.5 sm:grid-cols-3">
                   {costItems.map((cost) => (
-                    <Checkbox
-                      key={cost.id}
-                      id={cost.id}
-                      label={cost.label}
-                      checked={!!done[cost.id]}
-                      onCheckedChange={(v) => toggle(cost.id, v)}
-                    />
+                    <div key={cost.id} className="flex items-start gap-2">
+                      <Checkbox
+                        id={cost.id}
+                        label={cost.label}
+                        className="min-w-0 flex-1"
+                        checked={!!done[cost.id]}
+                        onCheckedChange={(v) => toggle(cost.id, v)}
+                      />
+                      {cost.href && (
+                        <StudyLink href={cost.href} label={cost.label} />
+                      )}
+                    </div>
                   ))}
                 </CardContent>
               </Card>
@@ -1346,12 +1525,22 @@ export default function App() {
                     <p className="flex-1 text-[13px] leading-relaxed text-muted-foreground">
                       {item.body}
                     </p>
-                    <Checkbox
-                      id={item.id}
-                      label={item.check}
-                      checked={!!done[item.id]}
-                      onCheckedChange={(v) => toggle(item.id, v)}
-                    />
+                    <div className="flex items-start gap-2">
+                      <Checkbox
+                        id={item.id}
+                        label={item.check}
+                        className="min-w-0 flex-1"
+                        checked={!!done[item.id]}
+                        onCheckedChange={(v) => toggle(item.id, v)}
+                      />
+                      {item.href && (
+                        <StudyLink
+                          href={item.href}
+                          label={item.check}
+                          kind="course"
+                        />
+                      )}
+                    </div>
                   </CardContent>
                 </Card>
               ))}
